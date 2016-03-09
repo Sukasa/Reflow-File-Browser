@@ -1,0 +1,50 @@
+﻿"KNOCKKNOCK"
+	Broadcast out from a file browser to find compatible hosts
+
+"HIHI"
+	Sent from file host to file browser as an "I'm here notification"
+
+"READY <MaxSize>"
+	Sent from file host when an operation is ready to begin, e.g. sending binary data to a file browser
+	Also sent from file host during upload; "READY" signifies readiness to recieve next binary chunk of up to MaxSize bytes
+
+"DONE"
+	Sent from file host when an operation has been completed
+
+"IAM [Name]"
+	Sent from a file host to identify the host
+
+"ROOT [Path]"
+	Sent from a file host to set the root directory for that host
+
+"CURRENT [Status]"
+	Sent from a file host to clarify current status of the host, e.g. reflow oven operating mode
+
+"LIST [File Listing]"
+	Sent from a file host in response to a "DIR" command.  File listings are full paths with "#" and the file size (in bytes) appended, demarcated by \r\n sequences
+	e.g.
+	LIST SD\File1.txt#444
+	SD\File2.txt#254
+	SD\Image.bmp#112643
+	SD\SomeFolder#DIR
+
+
+"MKDIR [Path]"
+	Sent from a file browser to a host, to create a new folder
+
+"DIR [Path]"
+	Sent from a file browser to a host, to retrieve the file/folder list 
+
+"GET [Path]"
+	Sent from a file browser to a host, to begin retrieving a specific file.
+	The host will respond with "READY [Size]" when it can serve the file, and then will transmit the full file in raw binary after that, possibly in chunks
+
+"PUT [Path] [Size]"
+	Sent from a file browser to a host, to begin sending a specific file.  This may overwrite a file or create a new one.
+	The host will respond with "READY [MaxSize]" when it can receive the first chunk of up to MaxSize bytes
+	The host will respond with "READY" after each chunk.
+	The host will respond with "DONE" when it has recieved all data
+
+"DELETE [Path]"
+	Sent from a file browser to a host, to have the host delete a file
+	The host will respond with "DONE" when the file is deleted
